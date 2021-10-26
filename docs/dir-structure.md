@@ -1,0 +1,8 @@
+- docs/
+    - dir-structure.md
+- scripts/
+- public/
+- package.json
+- .babelrc
+- .eslintrc
+- .gitignore
