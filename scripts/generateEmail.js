@@ -71,15 +71,16 @@ function getReactTemplate() {
 async function reactToHTML(reactTemplate) {
     const reactEmail = React.createElement(reactTemplate)
     const html = ReactDOMServer.renderToStaticMarkup(reactEmail)
-    
+
     let emailHTML = await getFile('./email.html')
     let styles = argv['templateStylesFilepath'] ? (await getFile(
         `../src/templates/${argv['templateStylesFilepath']}`
         )) : ''
 
     emailHTML = emailHTML
-        .replace(CONTENT_TAG, html)
-        .replace(STYLE_TAG, styles)
+        .trim()
+        .replace(CONTENT_TAG, html.trim())
+        .replace(STYLE_TAG, styles.trim())
         
     return emailHTML
 }
