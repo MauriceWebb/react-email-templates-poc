@@ -1,0 +1,1 @@
+```npm run moe-build -- --reactTemplateFilepath Hello/index.js --moeFilepath hello-v1.html```
