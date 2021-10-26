@@ -1,23 +1,11 @@
 const fs = require('fs');
 const Path = require('path');
-
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 var argv = require('minimist')(process.argv.slice(2));
 
 const STYLE_TAG = '%STYLE%';
 const CONTENT_TAG = '%CONTENT%';
-const Email = require('../lib/templates/Hello').default;
-
-// import fs from 'fs'
-// import * as Path from 'path'
-// import * as React from 'react'
-// import * as ReactDOMServer from 'react-dom/server.js'
-// import minimist from 'minimist'
-// import Email from '../lib/templates/Hello.js'
-// const argv = minimist(process.argv.slice(2))
-// const STYLE_TAG = '%STYLE%';
-// const CONTENT_TAG = '%CONTENT%';
 
 generateEmail()
     .catch(err => console.log(err))
@@ -33,8 +21,8 @@ async function generateEmail() {
     const reactTemplate = await getReactTemplate()
 
     // 2. convert react template to html:
-    // const email = await reactToHTML(reactTemplate)
-    const email = await reactToHTML(Email)
+    const email = await reactToHTML(reactTemplate)
+    // const email = await reactToHTML(Email)
 
     // 3. save html within correct moE:
     await saveEmail(email)
@@ -73,25 +61,17 @@ function verifyEnvVars() {
 }
 
 function getReactTemplate() {
-    // const reactTemplate = require(Path.join(
-    //     __dirname,
-    //     '../lib/templates',
-    //     argv['reactTemplateFilepath']
-    // )).default;
-
-    return getFile(Path.join(
+    return require(Path.join(
+        __dirname,
         '../lib/templates',
         argv['reactTemplateFilepath']
-    ))
+    )).default;
 }
 
 async function reactToHTML(reactTemplate) {
     const reactEmail = React.createElement(reactTemplate)
-    // console.log(reactEmail)
     const html = ReactDOMServer.renderToStaticMarkup(reactEmail)
-    console.log('GETTING EMAILHTML')
     let emailHTML = await getFile('./email.html')
-    console.log('emailHTML:', emailHTML)
     emailHTML = emailHTML
         .replace(CONTENT_TAG, html)
         .replace(STYLE_TAG, '')
