@@ -1,20 +1,18 @@
 const fs = require('fs');
 const Path = require('path');
-const React = require('react');
 const ReactDOMServer = require('react-dom/server');
-const ReactDOM = require('react-dom')
 const css = require('css');
 var argv = require('minimist')(process.argv.slice(2));
 
-
-const STYLE_TAG = '%STYLE%';
-const CONTENT_TAG = '%CONTENT%';
-
+// MAIN:
 generateEmail()
     .catch(err => console.log(err))
 
-
 // FUNCTIONS:
+
+function toCamelCase (string) {
+    return string.replace(/-./g, x => x[1].toUpperCase())
+}
 
 async function generateEmail() {
     // 0. verify all required env vars were provided:
@@ -27,7 +25,7 @@ async function generateEmail() {
     const email = await reactToHTML(reactTemplate)
     // const email = await reactToHTML(Email)
 
-    // 3. save html within correct moE:
+    // 3. save html within correct moE dir:
     await saveEmail(email)
 }
 
@@ -71,28 +69,50 @@ function getReactTemplate() {
     )).default;
 }
 
-function stylizeReact(reactComponent) {
-    // console.log(reactComponent.props.children)
-    reactComponent.props.children = React.Children.map(reactComponent.props.children, (el, idx) => {
-        // console.log(el.type.name)
-    })
-    // console.log(reactComponent.ref)
+function stylizeReact(reactComponent, styleObj = {}) {
+    if (typeof reactComponent === 'string') { return reactComponent }
+    const tmpComp = {...reactComponent}
+    const currentStyles = tmpComp.props?.style || {}
+    const newStyles = tmpComp.props?.className?.split(' ')
+        .reduce((obj, name) => {
+            const copiedStyleObj = styleObj[`.${name}`]
+            obj = {
+                ...obj,
+                ...copiedStyleObj
+            }
+            return obj
+        }, {})
+
+    const componentNewStyles  = {
+        ...newStyles,
+        ...currentStyles
+    }
+
+    tmpComp.props = {
+        ...reactComponent.props,
+        style: componentNewStyles
+    }
+
+    if (tmpComp.props.children && Array.isArray(tmpComp.props.children)) {
+        tmpComp.props.children = tmpComp.props.children
+            .map(childComponent => stylizeReact(childComponent, styleObj))
+    }
+
+    return tmpComp
 }
 
 async function reactToHTML(reactTemplate) {
-    stylizeReact(reactTemplate())
-    const reactEmail = React.createElement(reactTemplate)
-    const html = ReactDOMServer.renderToStaticMarkup(reactEmail)
-
-    let emailHTML = await getFile('./email.html')
+    // get styles:
     let styles = ''
+    let reactStyleObj = {}
 
     if (argv['templateStylesFilepath']) {
         const templatesFolder = '../src/templates'
         const pathToStylesheet = Path
             .join(templatesFolder, argv['templateStylesFilepath'])
-        const styleObj = await cssToObj(pathToStylesheet)
-        const styleJSON = JSON.stringify(styleObj, null, 2)
+        const htmlStyleObj = await cssToObj({pathToStylesheet})
+        reactStyleObj = await cssToObj({pathToStylesheet, camelCaseStyleProps: true })
+        const styleJSON = JSON.stringify(htmlStyleObj, null, 2)
         styles = styleJSON
             .substring(1, styleJSON.length - 1)
             .replace(/"|(?<=})\s*,/g, '')
@@ -101,21 +121,25 @@ async function reactToHTML(reactTemplate) {
                 if (match.trim() === ',') return ';\n'
                 return  ` ${match.trim()};\n`
             })
-        
-        console.log('styles:', styles)
     }
+
+    // get html:
+    let emailHTML = await getFile('./email.html')
+    const stylizedReactTemplate = stylizeReact(reactTemplate(), reactStyleObj)
+    const html = ReactDOMServer.renderToStaticMarkup(stylizedReactTemplate)
 
     emailHTML = emailHTML
         .trim()
-        .replace(CONTENT_TAG, html.trim())
-        .replace(STYLE_TAG, styles.trim())
+        .replace(/%CONTENT%/g, html.trim())
+        .replace(/%STYLE%/g, styles.trim())
         
     return emailHTML
 }
 
-async function cssToObj (pathToStylesheet, styles = {}, i = 0) {
+async function cssToObj ({pathToStylesheet, styles = {}, camelCaseStyleProps = false}) {
     // 1. get stylesheet:
     const cssFile = await getFile(pathToStylesheet)
+    
     // 2. parse stylesheet to array of rules
     const cssRules = css.parse(cssFile, { source: pathToStylesheet })
         .stylesheet
@@ -124,8 +148,6 @@ async function cssToObj (pathToStylesheet, styles = {}, i = 0) {
     const rulesObj = await cssRules
         .reduce(async (styleObj, rule, idx) => {
             styleObj = await styleObj
-            // console.log('styleObj:', styleObj)
-            // console.log(`RULE-${i}-${idx}:`, rule)
             // 3.1. if import, return cssToObj(pathToImportedStylesheet):
             if (rule.import) {
                 // './extraStyles.css'
@@ -140,11 +162,14 @@ async function cssToObj (pathToStylesheet, styles = {}, i = 0) {
                     .slice(0,rpsrcSplit.length - 1 - (impfSplit.length - 1))
                     .join('/') + `/${impfSplit.join('/')}`.replace(/\.\/|\.\.\//g, '')
                 // update stylesObj:
-                styleObj = { ...styleObj, ...await cssToObj(
-                    pathToImportedStylesheet, 
-                    styleObj,
-                    i+1
-                ) }
+                styleObj = { 
+                    ...styleObj, 
+                    ...await cssToObj({
+                        pathToStylesheet: pathToImportedStylesheet, 
+                        styles: styleObj,
+                        camelCaseStyleProps
+                    }) 
+                }
             } 
             else if (rule.selectors && rule.declarations) {
                 // 3.2. For now, only apply rules for classes and ids:
@@ -154,6 +179,10 @@ async function cssToObj (pathToStylesheet, styles = {}, i = 0) {
                 
                 styleObj[rule.selectors[0]] = rule.declarations
                     .reduce((dObj, {property, value}) => {
+                        if (camelCaseStyleProps) {
+                            property = toCamelCase(property)
+                        }
+
                         dObj[property] = value
                         return dObj
                     }, {})

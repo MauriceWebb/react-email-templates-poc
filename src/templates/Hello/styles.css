@@ -7,3 +7,7 @@ body {
 .header-class {
     color: pink;
 }
+
+.test-extra {
+    font-size: 2rem;
+}
