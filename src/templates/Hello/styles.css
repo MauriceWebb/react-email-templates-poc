@@ -7,3 +7,8 @@
 .test-extra {
     font-size: 2rem;
 }
+
+#blue-box-span {
+    border: 1px solid blue;
+    padding: .25rem;
+}

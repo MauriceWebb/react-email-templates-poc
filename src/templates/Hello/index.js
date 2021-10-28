@@ -20,7 +20,7 @@ export default function Hello() {
                 <p className="extra-class">Reach us at: <NumberLink number={18559252559} /></p>
                 <p>{`{{ EventAttribute['promisePaymentDueDate']|dateFormatter('%-m/`}<span>{`%-d`}</span>{`/%Y') }}`}</p>
                 <InlineJinja>
-                    EventAttribute['inlineTestVar'] == true ? <span><strong>yes</strong></span> : <span>no</span>
+                    EventAttribute['inlineTestVar'] == true ? <span id="blue-box-span"><strong>yes</strong></span> : <span>no</span>
                 </InlineJinja>
             </Grid>
         </React.Fragment>

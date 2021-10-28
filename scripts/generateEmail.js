@@ -117,10 +117,8 @@ async function reactToHTML(reactTemplate) {
             .substring(1, styleJSON.length - 1)
             .replace(/"|(?<=})\s*,/g, '')
             .replace(/:\s*{/g, ' {')
-            .replace(/(?<=\w),\n|(:.*\w\s)/g, match => {
-                if (match.trim() === ',') return ';\n'
-                return  ` ${match.trim()};\n`
-            })
+            .replace(/(?<=\w):*,\s+(?=\s*\w)/g, ';\n')
+            .replace(/(?<=\w)\s+(?=})/g, ';\n')
     }
 
     // get html:
