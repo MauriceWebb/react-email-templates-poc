@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Hello from './templates/Hello/index'
-import './templates/Hello/styles.css'
+import Hello from './templates/Hello-v1/index'
+import './templates/Hello-v1/styles.css'
 
 ReactDOM.render(
     <Hello />,

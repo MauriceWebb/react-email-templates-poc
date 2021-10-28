@@ -4,9 +4,9 @@ function Column({ children, style = {}, className }) {
     return <td {...{ style, className }}>{children}</td>
 }
 
-function Row({ children, style = {} }) {
+function Row({ children, style = {}, className }) {
     return (
-        <tr {...{ style }}>
+        <tr {...{ style, className }}>
             {React.Children.map(children, el => {
                 if (el.type === Column) return el
                 return <Column>{el}</Column>
@@ -15,9 +15,9 @@ function Row({ children, style = {} }) {
     )
 }
 
-function Grid({ children, style = {} }) {
+function Grid({ children, style = {}, className }) {
     return (
-        <table {...{ style }}>
+        <table {...{ style, className }}>
             <tbody>
                 {React.Children.map(children, el => {
                     if (!el) return

@@ -51,7 +51,6 @@ function verifyEnvVars() {
     const missingVars = []
     const requiredVars = [
         'reactTemplateFilepath',
-        'moeFilepath'
     ]
 
     requiredVars.forEach(reqVar => {
@@ -105,25 +104,40 @@ function stylizeReact(reactComponent, styleObj = {}) {
 
 async function reactToHTML(reactTemplate) {
     const prettierConfig = await prettier.resolveConfig('./.prettierrc.js')
-    // get styles:
     let styles = ''
     let reactStyleObj = {}
+    let pathToStylesheet
+    const proposedCssFilepathSplit = argv['reactTemplateFilepath'].split('/')
+    let proposedCssFilepath = '../src/templates/' + proposedCssFilepathSplit
+        .slice(
+            0,
+            proposedCssFilepathSplit.length - 1 > 0 ? 
+                proposedCssFilepathSplit.length - 1 : undefined
+        )
+        .join('/') + '/styles.css'
 
+    // if arg['templateStylesFilepath'] was passed, determine and set pathToStylesheet:
+    // else set pathToStyleSheet to cssFilepath:
     if (argv['templateStylesFilepath']) {
-        const templatesFolder = '../src/templates'
-        const pathToStylesheet = Path
-            .join(templatesFolder, argv['templateStylesFilepath'])
-        const htmlStyleObj = await cssToObj({pathToStylesheet})
-        reactStyleObj = await cssToObj({pathToStylesheet, camelCaseStyleProps: true })
-        const styleJSON = JSON.stringify(htmlStyleObj, null, 2)
-        styles = styleJSON
-            .substring(1, styleJSON.length - 1)
-            .replace(/"|(?<=})\s*,/g, '')
-            .replace(/:\s*{/g, ' {')
-            .replace(/(?<=\w):*,\s+(?=\s*\w)/g, ';\n')
-            .replace(/(?<=\w)\s+(?=})/g, ';\n')
-            .replace(/^\s*|\s*$/g, '')
+        pathToStylesheet = Path.join('../src/templates', argv['templateStylesFilepath'])
+    } else {
+        pathToStylesheet = proposedCssFilepath
     }
+
+    // verify that file exists and store boolean to variable:
+    const styleSheetExists = fse.existsSync(Path.resolve(__dirname, pathToStylesheet))
+    
+    // get styles:
+    const htmlStyleObj = styleSheetExists ? await cssToObj({pathToStylesheet}) : {}
+    reactStyleObj = styleSheetExists ? await cssToObj({pathToStylesheet, camelCaseStyleProps: true }) : {}
+    const styleJSON = JSON.stringify(htmlStyleObj, null, 2)
+    styles = styleSheetExists ? styleJSON
+        .substring(1, styleJSON.length - 1)
+        .replace(/"|(?<=})\s*,/g, '')
+        .replace(/:\s*{/g, ' {')
+        .replace(/(?<=\w):*,\s+(?=\s*\w)/g, ';\n')
+        .replace(/(?<=\w)\s+(?=})/g, ';\n')
+        .replace(/^\s*|\s*$/g, '') : ''
 
     // get html:
     let emailHTML = await getFile('./email.html')
@@ -207,12 +221,12 @@ async function cssToObj ({pathToStylesheet, styles = {}, camelCaseStyleProps = f
 }
 
 function saveEmail(email) {
+    const proposedMoeFilename = argv['reactTemplateFilepath']
+        .split('/')[0]
+        .toLowerCase() + '.html'
+    const moeFilepath = argv['moeFilepath'] || proposedMoeFilename
     return new Promise((resolve, reject) => {
-        fse.outputFileSync(Path.join(
-          __dirname,
-          '../moE',
-          argv['moeFilepath']
-      ), email, (err) => {
+        fse.outputFileSync(Path.join(__dirname,'../moE',moeFilepath), email, (err) => {
         if (err) return reject(err);
         return resolve();
       });
