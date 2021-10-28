@@ -1,0 +1,9 @@
+.extra-class {
+    color: lightsteelblue;
+    font-weight: bold;
+}
+
+p {
+    color: red;
+    border: 1px solid black;
+}

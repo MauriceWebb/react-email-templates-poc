@@ -1,0 +1,13 @@
+{
+    "elements": {
+        "body": {
+            "background-color": "lightgrey"
+        }
+    },
+    "classes": {
+        "pre-header": {
+            "color": "pink"
+        }
+    },
+    "ids": {}
+}

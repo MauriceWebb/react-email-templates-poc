@@ -1,4 +1,6 @@
 import React from 'react'
+import toDigitsOnly from '../helpers/toDigitsOnly'
+import toFormattedPhoneNumber from '../helpers/toFormattedPhoneNumber'
 
 export default function NumberLink({
     number,
@@ -8,10 +10,8 @@ export default function NumberLink({
 }) {
     if (!number && !children) return
 
-    const pNum = number ? String(number).replace(/\D/g, '') : null
-    if (pNum.length !== 11) throw Error("NumberLink's 'number' prop must be 11 digits in length.")
-
-    const fNum = `+${pNum[0]}-${pNum.substring(1, 4)}-${pNum.substring(4, 7)}-${pNum.substring(pNum.length - 4)}`
+    const pNum = number ? toDigitsOnly(number) : null
+    const fNum = toFormattedPhoneNumber(pNum)
 
     return (
         <a
