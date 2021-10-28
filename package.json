@@ -20,7 +20,9 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
+    "fs-extra": "^10.0.0",
     "minimist": "^1.2.5",
+    "prettier": "^2.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
@@ -43,5 +45,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none"
   }
 }

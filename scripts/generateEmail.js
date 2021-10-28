@@ -1,7 +1,9 @@
 const fs = require('fs');
+const fse = require('fs-extra')
 const Path = require('path');
 const ReactDOMServer = require('react-dom/server');
 const css = require('css');
+const prettier = require('prettier')
 var argv = require('minimist')(process.argv.slice(2));
 
 // MAIN:
@@ -102,6 +104,7 @@ function stylizeReact(reactComponent, styleObj = {}) {
 }
 
 async function reactToHTML(reactTemplate) {
+    const prettierConfig = await prettier.resolveConfig('./.prettierrc.js')
     // get styles:
     let styles = ''
     let reactStyleObj = {}
@@ -119,17 +122,22 @@ async function reactToHTML(reactTemplate) {
             .replace(/:\s*{/g, ' {')
             .replace(/(?<=\w):*,\s+(?=\s*\w)/g, ';\n')
             .replace(/(?<=\w)\s+(?=})/g, ';\n')
+            .replace(/^\s*|\s*$/g, '')
     }
 
     // get html:
     let emailHTML = await getFile('./email.html')
     const stylizedReactTemplate = stylizeReact(reactTemplate(), reactStyleObj)
     const html = ReactDOMServer.renderToStaticMarkup(stylizedReactTemplate)
-
+    const formattedHTML = prettier
+        .format(html.trim(), { ...prettierConfig, parser: 'html' })
+    const formattedCSS = prettier
+        .format(styles.trim(), { ...prettierConfig, parser: 'css' })
+    
     emailHTML = emailHTML
         .trim()
-        .replace(/%CONTENT%/g, html.trim())
-        .replace(/%STYLE%/g, styles.trim())
+        .replace(/%CONTENT%/g, formattedHTML)
+        .replace(/%STYLE%/g, formattedCSS)
         
     return emailHTML
 }
@@ -171,7 +179,7 @@ async function cssToObj ({pathToStylesheet, styles = {}, camelCaseStyleProps = f
             } 
             else if (rule.selectors && rule.declarations) {
                 // 3.2. For now, only apply rules for classes and ids:
-                if (!/^[\.|#][a-zA-Z]+[-\w]*$/.test(rule.selectors[0])) { 
+                if (!/^[.|#][a-zA-Z]+[-\w]*$/.test(rule.selectors[0])) { 
                     return styleObj 
                 }
                 
@@ -200,7 +208,7 @@ async function cssToObj ({pathToStylesheet, styles = {}, camelCaseStyleProps = f
 
 function saveEmail(email) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(Path.join(
+        fse.outputFileSync(Path.join(
           __dirname,
           '../moE',
           argv['moeFilepath']
