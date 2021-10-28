@@ -1,9 +1,5 @@
 @import url('./extraStyles.css');
 
-body {
-    background-color: lightgrey;
-}
-
 .header-class {
     color: pink;
 }

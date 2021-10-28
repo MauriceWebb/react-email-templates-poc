@@ -32,7 +32,7 @@
 </head>
 
 <body style="width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;">
-    <span hidden="" style="font-size:2rem;color:red" class="pre-header test-extra">This is a preheader with hidden text</span><table><tbody><tr><td><h1 class="header-class" style="color:pink">Hello Ally-Templates 👋🏾</h1></td></tr><tr><td><p class="extra-class" style="color:lightsteelblue;font-weight:bold">Reach us at: <a href="tel:+18559252559" alias="Call"><span><span>+1-855-925-2559</span></span></a></p></td></tr></tbody></table>
+    <span hidden="" style="font-size:2rem;color:red" class="pre-header test-extra">This is a preheader with hidden text</span><table><tbody><tr><td><h1 class="header-class" style="color:pink">Hello Ally-Templates 👋🏾</h1></td></tr><tr><td><p class="extra-class" style="color:lightsteelblue;font-weight:bold">Reach us at: <a href="tel:+18559252559" alias="Call"><span><span>+1-855-925-2559</span></span></a></p></td></tr><tr><td><p>{{ EventAttribute[&#x27;promisePaymentDueDate&#x27;]|dateFormatter(&#x27;%-m/<span>%-d</span>/%Y&#x27;) }}</p></td></tr><tr><td><p>{{ EventAttribute[&#x27;inlineTestVar&#x27;] == true ? <span><strong>yes</strong></span> : <span>no</span> }}</p></td></tr></tbody></table>
 </body>
 
 </html>
