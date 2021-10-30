@@ -71,7 +71,7 @@ export default function Template() {
                         }}
                     >
                         <Grid.Row style={{
-                            verticleAlign: "top",
+                            verticalAlign: "top",
                             paddingLeft: 20,
                             color: "#505050 !important",
                             fontSize: 16
@@ -96,7 +96,7 @@ export default function Template() {
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row style={{
-                            verticleAlign: "top",
+                            verticalAlign: "top",
                             paddingLeft: 20,
                             color: "#505050 !important",
                             fontSize: 16

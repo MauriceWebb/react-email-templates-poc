@@ -1,3 +1,7 @@
+body {
+    background-color: #d8d8d8;
+}
+
 .mobileTitle {
     height: 59px;
     border-bottom: 2px solid #19988A;
@@ -37,8 +41,4 @@
 
 .bold {
     font-weight: bold;
-}
-
-.body {
-    background-color: #d8d8d8;
 }

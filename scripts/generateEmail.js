@@ -73,8 +73,9 @@ function getReactTemplate() {
 function stylizeReact(reactComponent, styleObj = {}) {
     if (typeof reactComponent === 'string') { return reactComponent }
     const tmpComp = {...reactComponent}
-    const currentStyles = tmpComp.props?.style || {}
-    const newStyles = tmpComp.props?.className?.split(' ')
+    const inlineStyles = tmpComp.props?.style || {}
+    // add class styles first:
+    const classStyles = tmpComp.props?.className?.split(' ')
         .reduce((obj, name) => {
             const copiedStyleObj = styleObj[`.${name}`]
             obj = {
@@ -83,10 +84,21 @@ function stylizeReact(reactComponent, styleObj = {}) {
             }
             return obj
         }, {})
+    // add id styles:
+    const idStyles = tmpComp.props?.id?.split(' ')
+        .reduce((obj, name) => {
+            const copiedStyleObj = styleObj[`#${name}`]
+            obj = {
+                ...obj,
+                ...copiedStyleObj
+            }
+            return obj
+        }, {})
 
     const componentNewStyles  = {
-        ...newStyles,
-        ...currentStyles
+        ...classStyles,
+        ...idStyles,
+        ...inlineStyles
     }
 
     tmpComp.props = {
@@ -195,9 +207,9 @@ async function cssToObj ({pathToStylesheet, styles = {}, camelCaseStyleProps = f
             } 
             else if (rule.selectors && rule.declarations) {
                 // 3.2. For now, only apply rules for classes and ids:
-                if (!/^[.|#][a-zA-Z]+[-\w]*$/.test(rule.selectors[0])) { 
-                    return styleObj 
-                }
+                // if (!/^[.|#][a-zA-Z]+[-\w]*$/.test(rule.selectors[0])) { 
+                //     return styleObj 
+                // }
                 
                 styleObj[rule.selectors[0]] = rule.declarations
                     .reduce((dObj, {property, value}) => {
