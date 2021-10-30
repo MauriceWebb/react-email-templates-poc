@@ -23,20 +23,19 @@
 <title>Ally Alert</title>
 <style>
 .extra-class {
-  color: lightsteelblue;
-  font-weight: bold;
+    color: lightsteelblue;
+font-weight: bold;
 }
-.header-class {
-  color: pink;
+  .header-class {
+    color: pink;
 }
-.test-extra {
-  font-size: 2rem;
+  .test-extra {
+    font-size: 2rem;
 }
-#blue-box-span {
-  border: 1px solid blue;
-  padding: 0.25rem;
+  #blue-box-span {
+    border: 1px solid blue;
+padding: .25rem;
 }
-
 </style>
 
 </head>
@@ -45,68 +44,22 @@
 
 <style>
 .extra-class {
-  color: lightsteelblue;
-  font-weight: bold;
+    color: lightsteelblue;
+font-weight: bold;
 }
-.header-class {
-  color: pink;
+  .header-class {
+    color: pink;
 }
-.test-extra {
-  font-size: 2rem;
+  .test-extra {
+    font-size: 2rem;
 }
-#blue-box-span {
-  border: 1px solid blue;
-  padding: 0.25rem;
+  #blue-box-span {
+    border: 1px solid blue;
+padding: .25rem;
 }
-
 </style>
 
-<span
-  hidden=""
-  style="font-size: 2rem; color: red"
-  class="pre-header test-extra"
-  >This is a preheader with hidden text</span
->
-<table>
-  <tbody>
-    <tr>
-      <td>
-        <h1 class="header-class" style="color: pink">
-          Hello Ally-Templates 👋🏾
-        </h1>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="extra-class" style="color: lightsteelblue; font-weight: bold">
-          Reach us at:
-          <a href="tel:+18559252559" alias="Call"
-            ><span><span>+1-855-925-2559</span></span></a
-          >
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p>
-          {{
-          EventAttribute[&#x27;promisePaymentDueDate&#x27;]|dateFormatter(&#x27;%-m/<span>%-d</span>/%Y&#x27;)
-          }}
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p>
-          {{ EventAttribute[&#x27;inlineTestVar&#x27;] == true ?
-          <span id="blue-box-span"><strong>yes</strong></span> :
-          <span>no</span> }}
-        </p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
+<span hidden="" class="pre-header test-extra" text="This is a preheader with hidden text" style="font-size:2rem;color:red"></span><table><tbody><tr><td><h1 class="header-class" style="color:pink">Hello Ally-Templates 👋🏾</h1></td></tr><tr><td><p class="extra-class" style="color:lightsteelblue;font-weight:bold">Reach us at: <a href="tel:+18559252559" alias="Call"><strong><span>+1-855-925-2559</span></strong></a></p></td></tr><tr><td>{{ EventAttribute[&#x27;promisePaymentDueDate&#x27;]|dateFormatter(&#x27;%-m/<span>%-d</span>/%Y&#x27;) }}</td></tr><tr><td>{{ EventAttribute[&#x27;inlineTestVar&#x27;] == true ? <span id="blue-box-span"><strong>yes</strong></span> : <span>no</span> }}</td></tr></tbody></table>
 
 </body>
 

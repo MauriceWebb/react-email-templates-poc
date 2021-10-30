@@ -130,14 +130,16 @@ async function reactToHTML(reactTemplate) {
     // get styles:
     const htmlStyleObj = styleSheetExists ? await cssToObj({pathToStylesheet}) : {}
     reactStyleObj = styleSheetExists ? await cssToObj({pathToStylesheet, camelCaseStyleProps: true }) : {}
-    const styleJSON = JSON.stringify(htmlStyleObj, null, 2)
-    styles = styleSheetExists ? styleJSON
-        .substring(1, styleJSON.length - 1)
-        .replace(/"|(?<=})\s*,/g, '')
-        .replace(/:\s*{/g, ' {')
-        .replace(/(?<=\w):*,\s+(?=\s*\w)/g, ';\n')
-        .replace(/(?<=\w)\s+(?=})/g, ';\n')
-        .replace(/^\s*|\s*$/g, '') : ''
+    const htmlStyleStr = Object.entries(htmlStyleObj)
+        .reduce((str, [className, props]) => {
+            str += `${className} {\n`
+            Object.entries(props).forEach(([prop, rule]) => {
+                str += `  ${prop}: ${rule};\n`
+            })
+            str += '}\n'
+            return str
+        }, '')
+    styles = styleSheetExists ? htmlStyleStr : ''
 
     // get html:
     let emailHTML = await getFile('./email.html')
@@ -221,9 +223,14 @@ async function cssToObj ({pathToStylesheet, styles = {}, camelCaseStyleProps = f
 }
 
 function saveEmail(email) {
-    const proposedMoeFilename = argv['reactTemplateFilepath']
-        .split('/')[0]
-        .toLowerCase() + '.html'
+    const proposedMoeFilenameSplit = argv['reactTemplateFilepath'].split('/')
+    const proposedMoeFilename = (
+        proposedMoeFilenameSplit.length > 2 ?
+        proposedMoeFilenameSplit
+            .slice(0, proposedMoeFilenameSplit.length - 1)
+            .join('/') : proposedMoeFilenameSplit[0]
+    ).toLowerCase() + '.html'
+        
     const moeFilepath = argv['moeFilepath'] || proposedMoeFilename
     return new Promise((resolve, reject) => {
         fse.outputFileSync(Path.join(__dirname,'../moE',moeFilepath), email, (err) => {

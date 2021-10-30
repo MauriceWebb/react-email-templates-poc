@@ -1,0 +1,25 @@
+.mobileTitle {
+    height: 59px;
+    border-bottom: 2px solid #19988A;
+    color: #ffffff;
+    font-family: Arial, Helvetica, Geneva, sans-serif;
+    font-size: 20px;
+    padding-left: 20px;
+}
+
+.ally-header-img {
+    display: block;
+    color: #ffffff;
+    font-family: Arial, Helvetica, Geneva, sans-serif;
+    font-size: 25px;
+}
+
+.table {
+    width: 100%;
+    border: 0;
+}
+
+.link {
+    color: #0071C4;
+    text-decoration: none;
+}

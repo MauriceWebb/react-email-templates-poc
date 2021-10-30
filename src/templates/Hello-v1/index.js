@@ -2,14 +2,7 @@ import React from 'react'
 import Grid from '../../components/Grid'
 import NumberLink from '../../components/NumberLink'
 import PreHeader from '../../components/PreHeader'
-
-function InlineJinja ({children}) {
-    return (<p>
-        {`{{ `}
-        {children}
-        {` }}`}
-    </p>)
-}
+import Jinja from '../../components/Jinja'
 
 export default function Hello() {
     return (
@@ -18,10 +11,12 @@ export default function Hello() {
             <Grid>
                 <h1 className="header-class">Hello Ally-Templates 👋🏾</h1>
                 <p className="extra-class">Reach us at: <NumberLink number={18559252559} /></p>
-                <p>{`{{ EventAttribute['promisePaymentDueDate']|dateFormatter('%-m/`}<span>{`%-d`}</span>{`/%Y') }}`}</p>
-                <InlineJinja>
+                <Jinja>
+                    EventAttribute['promisePaymentDueDate']|dateFormatter('%-m/<span>%-d</span>/%Y')
+                </Jinja>
+                <Jinja>
                     EventAttribute['inlineTestVar'] == true ? <span id="blue-box-span"><strong>yes</strong></span> : <span>no</span>
-                </InlineJinja>
+                </Jinja>
             </Grid>
         </React.Fragment>
     )

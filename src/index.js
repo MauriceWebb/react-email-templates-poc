@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Hello from './templates/Hello-v1/index'
-import './templates/Hello-v1/styles.css'
+import Template from './templates/auto/past-due/e4-post-credit-bureau-reporting-v1/index'
+import './templates/auto/past-due/e4-post-credit-bureau-reporting-v1/styles.css'
 
 ReactDOM.render(
-    <Hello />,
+    <Template />,
     document.getElementById('root')
 );

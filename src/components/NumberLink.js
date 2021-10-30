@@ -2,12 +2,7 @@ import React from 'react'
 import toDigitsOnly from '../helpers/toDigitsOnly'
 import toFormattedPhoneNumber from '../helpers/toFormattedPhoneNumber'
 
-export default function NumberLink({
-    number,
-    style,
-    className,
-    children
-}) {
+export default function NumberLink({ number, children, ...props }) {
     if (!number && !children) return
 
     const pNum = number ? toDigitsOnly(number) : null
@@ -17,11 +12,11 @@ export default function NumberLink({
         <a
             href={pNum ? `tel:+${pNum}` : ''}
             alias="Call"
-            {...{ style, className }}
+            {...props}
         >
-            <span>
-                <span>{fNum || children}</span>
-            </span>
+            <strong>
+                <span>{children || fNum}</span>
+            </strong>
         </a>
     )
 }
