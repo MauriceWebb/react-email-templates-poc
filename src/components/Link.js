@@ -4,7 +4,11 @@ export default function Link({children, ...props}) {
     return (
         <a className="link" target="_blank" {...props}>
             <strong>
-                <span>{children}</span>
+                <span>
+                    <nobr>
+                        {children}
+                    </nobr>
+                </span>
             </strong>
         </a>
     )

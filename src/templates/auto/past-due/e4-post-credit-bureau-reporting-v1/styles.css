@@ -17,9 +17,28 @@
 .table {
     width: 100%;
     border: 0;
+    font-family: Arial, Helvetica, Geneva, sans-serif;
+    margin: 0 auto;
+    font-size: 1rem;
 }
 
 .link {
     color: #0071C4;
     text-decoration: none;
+}
+
+.text-dark {
+    color: #2a2a2a;
+}
+
+.no-decoration {
+    text-decoration: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.body {
+    background-color: #d8d8d8;
 }

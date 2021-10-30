@@ -39,17 +39,32 @@
 .table {
   width: 100%;
   border: 0;
+  font-family: Arial, Helvetica, Geneva, sans-serif;
+  margin: 0 auto;
+  font-size: 1rem;
 }
 .link {
   color: #0071c4;
   text-decoration: none;
+}
+.text-dark {
+  color: #2a2a2a;
+}
+.no-decoration {
+  text-decoration: none;
+}
+.bold {
+  font-weight: bold;
+}
+.body {
+  background-color: #d8d8d8;
 }
 
 </style>
 
 </head>
 
-<body style="width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;">
+<body class="body" style="width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;">
 
 <style>
 .mobileTitle {
@@ -69,10 +84,25 @@
 .table {
   width: 100%;
   border: 0;
+  font-family: Arial, Helvetica, Geneva, sans-serif;
+  margin: 0 auto;
+  font-size: 1rem;
 }
 .link {
   color: #0071c4;
   text-decoration: none;
+}
+.text-dark {
+  color: #2a2a2a;
+}
+.no-decoration {
+  text-decoration: none;
+}
+.bold {
+  font-weight: bold;
+}
+.body {
+  background-color: #d8d8d8;
 }
 
 </style>
@@ -83,7 +113,13 @@
   class="table"
   cellspacing="0"
   cellpadding="0"
-  style="width: 100%; border: 0"
+  style="
+    width: 598px;
+    border: 0;
+    font-family: Arial, Helvetica, Geneva, sans-serif;
+    margin: 0 auto;
+    font-size: 1rem;
+  "
 >
   <tbody>
     <tr>
@@ -119,7 +155,7 @@
         </table>
       </td>
     </tr>
-    <tr>
+    <tr style="background-color: #eee">
       <td>
         <p style="padding: 10px 20px; margin: 0">
           <span class="mobile-hidden">Hello, </span>{{ UserAttribute.Name }}
@@ -148,7 +184,13 @@
     </tr>
     <tr>
       <td style="text-align: center; background-color: #eee">
-        <table cellspacing="0" cellpadding="0" style="width: 95%" width="95%">
+        <table
+          cellspacing="0"
+          cellpadding="0"
+          class="table"
+          style="width: 95%"
+          width="95%"
+        >
           <tbody>
             <tr>
               <td
@@ -195,6 +237,7 @@
           border="0"
           cellspacing="0"
           cellpadding="5"
+          class="table"
           style="width: 70%"
         >
           <tbody>
@@ -247,7 +290,13 @@
     </tr>
     <tr>
       <td style="text-align: center; background-color: #eee">
-        <table cellspacing="0" cellpadding="0" style="width: 95%" width="95%">
+        <table
+          cellspacing="0"
+          cellpadding="0"
+          class="table"
+          style="width: 95%"
+          width="95%"
+        >
           <tbody>
             <tr>
               <td
@@ -293,15 +342,17 @@
           Need assistance catching up on your payments? We can help you get back
           on track. Log in at
           <a class="link" target="_blank" href="https://www.ally.com/auto/"
-            ><strong><span>ally.com/auto</span></strong></a
+            ><strong
+              ><span><nobr>ally.com/auto</nobr></span></strong
+            ></a
           >
           or call us at
           <a
             href="tel:+18554772559"
             alias="Call"
-            class="link"
-            style="color: #0071c4; text-decoration: none"
-            ><strong><span>1-855-477-2559</span></strong></a
+            class="link bold"
+            style="color: #0071c4; text-decoration: none; font-weight: bold"
+            ><span><nobr>1-855-477-2559</nobr></span></a
           >
           to make your payment or view other payment options.
         </p>
@@ -313,11 +364,63 @@
           <strong>Snapshot</strong> and navigate to
           <strong>Explore payment assistance</strong> for more information.
         </p>
+        {% if EventAttribute[&#x27;stateCode&#x27;] == &#x27;CT&#x27; %}
+        <p>
+          We are attempting to collect the amount our records say you owe us
+          now. Any information we obtain will be used for that purpose.
+        </p>
+        {% elif EventAttribute[&#x27;stateCode&#x27;] == &#x27;DC&#x27; %}
+        <p>
+          We are attempting to collect the amount our records say you owe us
+          now. Any information we obtain will be used for that purpose.
+        </p>
+        {% elif EventAttribute[&#x27;stateCode&#x27;] == &#x27;HI&#x27; %}
+        <p>
+          We are attempting to collect the amount our records say you owe us
+          now. Any information we obtain will be used for that purpose. This
+          communication is from a debt collector.
+        </p>
+        {% elif EventAttribute[&#x27;stateCode&#x27;] == &#x27;IA&#x27; %}
+        <p>
+          We are attempting to collect the amount our records say you owe us
+          now. Any information we obtain will be used for that purpose. This
+          communication is from a debt collector.
+        </p>
+        {% elif EventAttribute[&#x27;stateCode&#x27;] == &#x27;MN&#x27; %}
+        <p>
+          This is sent by Ally Servicing, LLC, an Ally Financial subsidiary.
+          Minnesota requires Ally Servicing to be licensed as a collection
+          agency. Minnesota also requires us to give you the following
+          disclosure about Ally Servicing: This collection agency is licensed by
+          the Minnesota Department of Commerce.
+        </p>
+        {% elif EventAttribute[&#x27;stateCode&#x27;] == &#x27;NY&#x27; %}
+        <p>
+          We are attempting to collect the amount our records say you owe us
+          now. Any information we obtain will be used for that purpose.
+        </p>
+        {% elif EventAttribute[&#x27;stateCode&#x27;] == &#x27;NC&#x27; %}
+        <p>
+          We are attempting to collect the amount our records say you owe us
+          now. Any information we obtain will be used for that purpose.
+        </p>
+        {% elif EventAttribute[&#x27;stateCode&#x27;] == &#x27;VT&#x27; %}
+        <p>
+          We are attempting to collect the amount our records say you owe us
+          now. Any information we obtain will be used for that purpose.
+        </p>
+        {% else %}{% endif %}
       </td>
     </tr>
     <tr>
       <td style="text-align: center; background-color: #eee">
-        <table cellspacing="0" cellpadding="0" style="width: 95%" width="95%">
+        <table
+          cellspacing="0"
+          cellpadding="0"
+          class="table"
+          style="width: 95%"
+          width="95%"
+        >
           <tbody>
             <tr>
               <td
@@ -359,7 +462,7 @@
     </tr>
     <tr>
       <td style="background-color: #eee; padding: 30px 20px; font-size: 15px">
-        <table style="width: 100%">
+        <table class="table" style="width: 100%">
           <tbody>
             <tr>
               <td
@@ -384,11 +487,12 @@
                 "
               >
                 <span
-                  ><nobr
-                    >Call us at
-                    <a href="tel:+18774772559" alias="Call"
-                      ><strong><span>1-877-477-2559</span></strong></a
-                    ></nobr
+                  >Call us at
+                  <a
+                    href="tel:+18774772559"
+                    alias="Call"
+                    class="text-dark no-decoration"
+                    ><span><nobr>1-877-477-2559</nobr></span></a
                   ><br /><nobr
                     ><span style="white-space: nowrap"
                       >Available Mon - Sun, 8 am - 8 pm ET</span
@@ -408,12 +512,14 @@
               >
                 <p style="margin: 0">Access Ally Auto at</p>
                 <a
-                  class="link"
+                  class="link bold"
                   target="_blank"
                   href="https://www.ally.com/auto/"
                   title="Call us"
                   alias="Ally Auto"
-                  ><strong><span>ally.com/auto</span></strong></a
+                  ><strong
+                    ><span><nobr>ally.com/auto</nobr></span></strong
+                  ></a
                 >
               </td>
             </tr>
@@ -434,15 +540,23 @@
         </p>
         <p style="margin: 0; margin-bottom: 1rem">
           If you&#x27;d like to stop receiving collection emails, call us at
-          <a href="tel:+18554772559" alias="Call"
-            ><strong><span>1-855-477-2559</span></strong></a
+          <a
+            href="tel:+18554772559"
+            alias="Call"
+            class="text-dark no-decoration"
+            style="color: #2a2a2a; text-decoration: none"
+            ><span><nobr>1-855-477-2559</nobr></span></a
           >, send a secure message, or chat with us online.
         </p>
         <p style="margin: 0; margin-bottom: 1rem">
           Concerned about a suspicious email that appears to be from Ally Auto?
           Call us at
-          <a href="tel:+18889252559" alias="Call"
-            ><strong><span>1-888-925-2559</span></strong></a
+          <a
+            href="tel:+18889252559"
+            alias="Call"
+            class="text-dark no-decoration"
+            style="color: #2a2a2a; text-decoration: none"
+            ><span><nobr>1-888-925-2559</nobr></span></a
           >
           and we&#x27;ll investigate.
         </p>

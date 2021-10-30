@@ -9,7 +9,7 @@ export default function Template() {
     return (
         <React.Fragment>
             <PreHeader>Let us know how we can help.</PreHeader>
-            <Grid role="presentation" className="table" cellSpacing={0} cellPadding={0}>
+            <Grid role="presentation" className="table" cellSpacing={0} cellPadding={0} style={{ width: 598, margin: '0 auto'}}>
                 <Grid.Row>
                     <Grid role="presentation" className="table" cellSpacing={0} cellPadding={0}>
                         <Grid.Row>
@@ -33,7 +33,7 @@ export default function Template() {
                         </Grid.Row>
                     </Grid>
                 </Grid.Row>
-                <Grid.Row> 
+                <Grid.Row style={{backgroundColor: '#eee'}}> 
                     <p style={{padding: "10px 20px", margin: 0}}>
                         <span className="mobile-hidden">Hello, </span>
                         <Jinja>UserAttribute.Name</Jinja>
@@ -65,6 +65,7 @@ export default function Template() {
                         border={0} 
                         cellSpacing={0} 
                         cellPadding={5} 
+                        className="table"
                         style={{
                             width: "70%",
                         }}
@@ -129,14 +130,53 @@ export default function Template() {
                     padding: "25px 20px"
                 }}>
                     <p style={{ margin: 0, marginBottom: "1rem" }}>
-                        Need assistance catching up on your payments? We can help you get back on track. Log in at <Link href="https://www.ally.com/auto/">ally.com/auto</Link> or call us at <NumberLink className="link" number={18554772559}>1-855-477-2559</NumberLink> to make your payment or view other payment options.
+                        Need assistance catching up on your payments? We can help you get back on track. Log in at <Link href="https://www.ally.com/auto/">ally.com/auto</Link> or call us at <NumberLink className="link bold" number={18554772559}>1-855-477-2559</NumberLink> to make your payment or view other payment options.
                     </p>
                     <p style={{ margin: 0, marginBottom: "1rem" }}>
                         <strong>Let us know if you need further help.</strong>
                         <br />
                         If you’re experiencing or expect to face financial hardship, we may be able to help, but know that our short- and long-term assistance offers require upfront payments. After logging in, select a vehicle from your <strong>Snapshot</strong> and navigate to <strong>Explore payment assistance</strong> for more information.
                     </p>
-                    
+                    <Jinja.If condition="EventAttribute['stateCode'] == 'CT'">
+                        <p>
+                            We are attempting to collect the amount our records say you owe us now. Any information we obtain will be used for that purpose.
+                        </p>
+                        <Jinja.Elif condition="EventAttribute['stateCode'] == 'DC'">
+                            <p>
+                                We are attempting to collect the amount our records say you owe us now. Any information we obtain will be used for that purpose.
+                            </p>
+                        </Jinja.Elif>
+                        <Jinja.Elif condition="EventAttribute['stateCode'] == 'HI'">
+                            <p>
+                                We are attempting to collect the amount our records say you owe us now. Any information we obtain will be used for that purpose. This communication is from a debt collector.
+                            </p>
+                        </Jinja.Elif>
+                        <Jinja.Elif condition="EventAttribute['stateCode'] == 'IA'">
+                            <p>
+                                We are attempting to collect the amount our records say you owe us now. Any information we obtain will be used for that purpose. This communication is from a debt collector.
+                            </p>
+                        </Jinja.Elif>
+                        <Jinja.Elif condition="EventAttribute['stateCode'] == 'MN'">
+                            <p>
+                                This is sent by Ally Servicing, LLC, an Ally Financial subsidiary. Minnesota requires Ally Servicing to be licensed as a collection agency. Minnesota also requires us to give you the following disclosure about Ally Servicing: This collection agency is licensed by the Minnesota Department of Commerce.
+                            </p>
+                        </Jinja.Elif>
+                        <Jinja.Elif condition="EventAttribute['stateCode'] == 'NY'">
+                            <p>
+                                We are attempting to collect the amount our records say you owe us now. Any information we obtain will be used for that purpose.
+                            </p>
+                        </Jinja.Elif>
+                        <Jinja.Elif condition="EventAttribute['stateCode'] == 'NC'">
+                            <p>
+                                We are attempting to collect the amount our records say you owe us now. Any information we obtain will be used for that purpose.
+                            </p>
+                        </Jinja.Elif>
+                        <Jinja.Elif condition="EventAttribute['stateCode'] == 'VT'">
+                            <p>
+                                We are attempting to collect the amount our records say you owe us now. Any information we obtain will be used for that purpose.
+                            </p>
+                        </Jinja.Elif>
+                    </Jinja.If>
                 </Grid.Column>
                 <Grid.DividerRow />
                 <Grid.Column  style={{
@@ -145,9 +185,11 @@ export default function Template() {
                         fontSize: 15
                     }}>
 
-                    <Grid style={{
-                        width: "100%"
-                    }}>
+                    <Grid 
+                        className="table"
+                        style={{
+                            width: "100%"
+                        }}>
                         <Grid.Row>
                             <Grid.Column style={{
                                 verticalAlign: "middle",
@@ -171,9 +213,7 @@ export default function Template() {
                                 width: "51%"
                             }}>
                                 <span>
-                                    <nobr>
-                                        Call us at <NumberLink number={18774772559}>1-877-477-2559</NumberLink>
-                                    </nobr>
+                                    Call us at <NumberLink number={18774772559} className="text-dark no-decoration">1-877-477-2559</NumberLink>
                                     <br />
                                     <nobr>
                                         <span style={{
@@ -195,7 +235,7 @@ export default function Template() {
                                 <p style={{ margin: 0 }}>
                                     Access Ally Auto at
                                 </p>
-                                <Link href="https://www.ally.com/auto/" title="Call us" alias="Ally Auto">ally.com/auto</Link>
+                                <Link href="https://www.ally.com/auto/" title="Call us" alias="Ally Auto" className="link bold">ally.com/auto</Link>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -212,10 +252,10 @@ export default function Template() {
                         Please do not reply to this email.
                     </p>
                     <p style={{ margin: 0, marginBottom: "1rem" }}>
-                        If you'd like to stop receiving collection emails, call us at <NumberLink number={18554772559}>1-855-477-2559</NumberLink>, send a secure message, or chat with us online.
+                        If you'd like to stop receiving collection emails, call us at <NumberLink number={18554772559} className="text-dark no-decoration">1-855-477-2559</NumberLink>, send a secure message, or chat with us online.
                     </p>
                     <p style={{ margin: 0, marginBottom: "1rem" }}>
-                        Concerned about a suspicious email that appears to be from Ally Auto? Call us at <NumberLink number={18889252559}>1-888-925-2559</NumberLink> and we'll investigate.
+                        Concerned about a suspicious email that appears to be from Ally Auto? Call us at <NumberLink number={18889252559} className="text-dark no-decoration">1-888-925-2559</NumberLink> and we'll investigate.
                     </p>
                     <p style={{ margin: 0, marginBottom: "1rem" }}>
                         Ally Financial, <a href=" " style={{

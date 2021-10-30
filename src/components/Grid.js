@@ -44,6 +44,7 @@ function DividerRow() {
                 <Grid
                     cellSpacing={0}
                     cellPadding={0}
+                    className="table"
                     style={{
                         width: "95%"
                     }}

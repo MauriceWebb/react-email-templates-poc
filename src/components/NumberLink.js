@@ -14,9 +14,11 @@ export default function NumberLink({ number, children, ...props }) {
             alias="Call"
             {...props}
         >
-            <strong>
-                <span>{children || fNum}</span>
-            </strong>
+            <span>
+                <nobr>
+                    {children || fNum}
+                </nobr>
+            </span>
         </a>
     )
 }
